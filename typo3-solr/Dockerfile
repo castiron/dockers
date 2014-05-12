@@ -48,9 +48,7 @@ ADD config/tomcat-users.xml /etc/tomcat7/tomcat-users.xml
 RUN chown -R tomcat7:tomcat7 /var/lib/tomcat7/webapps/solr/WEB-INF/web.xml
 RUN chown -R tomcat7:tomcat7 /etc/tomcat7/tomcat-users.xml
 
-
 RUN /etc/init.d/tomcat7 stop
 
 EXPOSE 8080
-CMD /etc/init.d/tomcat7 start
-
+CMD service tomcat7 start && tail -F /var/lib/tomcat7/logs/catalina.out
