@@ -20,11 +20,6 @@ RUN apt-get install -y tomcat7-admin
 
 RUN echo "JAVA_HOME=/usr/lib/jvm/java-7-oracle" >> /etc/environment
 
-# Get Solr and copy it into the tomcat webapps dir
-#RUN cp /usr/local/src/solr-4.8.0/dist/solr-4.8.0.war /var/lib/tomcat7/webapps/solr.war
-#RUN mkdir /home/solr
-#RUN cp -R /usr/local/src/solr-4.8.0/example/solr/* /home/solr
-
 # Get commons logging dependency for solr
 RUN cp /usr/local/src/commons-logging-1.1.3/commons-logging-*.jar /usr/share/tomcat7/lib/
 
