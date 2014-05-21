@@ -41,14 +41,18 @@ RUN mv /opt/solr-tomcat/solr /home/solr
 RUN rm -rf /opt/solr-tomcat
 RUN chown -R tomcat7 /home/solr
 
-# Start tomcat and update the solr config file.
+# Start tomcat and update the solr config file. Starting Tomcat matters because it will setup
+# the webapps/solr directory, etc.
 RUN /etc/init.d/tomcat7 restart
 ADD config/web.xml /var/lib/tomcat7/webapps/solr/WEB-INF/web.xml
 ADD config/tomcat-users.xml /etc/tomcat7/tomcat-users.xml
 RUN chown -R tomcat7:tomcat7 /var/lib/tomcat7/webapps/solr/WEB-INF/web.xml
 RUN chown -R tomcat7:tomcat7 /etc/tomcat7/tomcat-users.xml
-
 RUN /etc/init.d/tomcat7 stop
 
+# Add the tomcat startup script
+ADD config/run.sh /opt/run.sh
+RUN chmod 777 /opt/run.sh
+
 EXPOSE 8080
-CMD service tomcat7 start && tail -F /var/lib/tomcat7/logs/catalina.out
+CMD ["/opt/run.sh"]

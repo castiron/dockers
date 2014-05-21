@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash -p
 
 # Usage:
 #	sudo ./install-solr.sh
