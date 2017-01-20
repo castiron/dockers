@@ -25,7 +25,7 @@ TOMCAT_WORK_DIR="/var/cache/tomcat7"
 TOMCAT_CONTEXT_DIR="${TOMCAT_CONFIG_DIR}/Catalina/localhost"
 TOMCAT_WEBAPP_DIR="/var/lib/tomcat7/webapps"
 
-GITBRANCH_PATH="solr_$EXT_SOLR_VERSION.x"
+GITBRANCH_PATH="release-$EXT_SOLR_VERSION.x"
 
 # Set default language for cores to download to english, if no commandline parameters are given
 if [ $# -eq 0 ]
@@ -69,12 +69,7 @@ wgetresource ()
 {
 	local wget_result
 
-	if [ $BRANCH_TEST_RETURN -eq "0" ]
-	then
-		RESOURCE="http://forge.typo3.org/projects/extension-solr/repository/revisions/$GITBRANCH_PATH/raw/Resources/"$1
-	else
-		RESOURCE="http://forge.typo3.org/projects/extension-solr/repository/revisions/master/raw/Resources/"$1
-	fi
+	RESOURCE="https://raw.githubusercontent.com/TYPO3-Solr/ext-solr/$GITBRANCH_PATH/Resources/"$1
 
 	if [ "$2" ]
 	then
@@ -129,7 +124,8 @@ cecho "Checking requirements." $green
 PASSALLCHECKS=1
 
 # test if release branch exists, if so we'll download from there
-wget --no-check-certificate -q -O /dev/null http://forge.typo3.org/projects/extension-solr/repository/revisions/$GITBRANCH_PATH/raw/
+wget --no-check-certificate -q -O /dev/null https://github.com/TYPO3-Solr/ext-solr/tree/$GITBRANCH_PATH/raw/
+
 BRANCH_TEST_RETURN=$?
 
 # Make sure only root can run this script
@@ -216,7 +212,7 @@ mkdir -p /opt/solr-tomcat
 cd /opt/solr-tomcat/
 
 cecho "Downloading Apache Solr $SOLR_VERSION" $green
-wget --progress=bar:force http://www.us.apache.org/dist/lucene/solr/$SOLR_VERSION/solr-$SOLR_VERSION.zip 2>&1 | progressfilt
+wget --progress=bar:force http://archive.apache.org/dist/lucene/solr/$SOLR_VERSION/solr-$SOLR_VERSION.zip 2>&1 | progressfilt
 
 cecho "Unpacking Apache Solr." $green
 unzip -q solr-$SOLR_VERSION.zip
@@ -314,3 +310,4 @@ cecho "Done." $green
 cecho "Now browse to http://localhost:8080/solr/" $green
 
 exit 0
+
